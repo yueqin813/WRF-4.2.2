@@ -10,3 +10,5 @@ The WRF Model is open-source code in the public domain, and its use is unrestric
 
 
 # WRF-4.2.2
+
+I modified the albedo in Pleim-Xiu LSM
