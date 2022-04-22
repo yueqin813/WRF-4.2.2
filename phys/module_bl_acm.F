@@ -797,7 +797,9 @@ CONTAINS
 !	          ELSE
 !	            FH = (MAX(1.-RI/RC,0.01))**2
 !	          ENDIF
-            FH=1./(1.+10.*RI+50.*RI**2+5000.*RI**4)+0.0012  !pleim5
+            !FH=1./(1.+10.*RI+50.*RI**2+5000.*RI**4)+0.0012  !pleim5
+            !FH=1./(1.+10.*RI+80.*RI**2+10000.*RI**4)       !modifed by Yue 4/20/22
+            FH=1./(1.+10.*RI+80.*RI**2+50000.*RI**4)        !modified by Yue 4-21-22
             FM= PR*FH + 0.00104
 
             EDDYZ(I,K) = KZO + SQRT(SS) * FH * SQL
