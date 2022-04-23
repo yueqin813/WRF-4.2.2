@@ -942,6 +942,10 @@ state    real   CLAY_PX          ij     misc        1         -      rh       "C
 state    real   CSAND_PX         ij     misc        1         -      rh       "CSAND_PX"      "Coarse sand perent for PX LSM"    "fraction"
 state    real   FMSAND_PX        ij     misc        1         -      rh       "FMSAND_PX"     "Fine-medium sand perent for PX LSM"    "fraction"
 
+# From ACM2 PBL (add by yueqin)
+state   real    EDDYZM        ikj    misc        1         -    hr         "EDDYZM"           "eddy diffusivity for momentum KM in ACM2 PBL" "m2 s-1"
+state   real    EDDYZH        ikj    misc        1         -    hr         "EDDYZH"           "eddy diffusivity for heat KH in ACM2 PBL" "m2 s-1"
+
 # sfclay PBL variables
 i1      real   PSIM           ij     misc        1         -     -         "PSIM"                "SIMILARITY FUNCTION FOR MOMENTUM"     ""
 i1      real   PSIH           ij     misc        1         -     -         "PSIH"                "SIMILARITY FUNCTION FOR HEAT"         ""

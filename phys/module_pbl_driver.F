@@ -9,7 +9,7 @@ CONTAINS
                   itimestep,dt,u_frame,v_frame                     &
                  ,bldt,curr_secs,adapt_step_flag                   &
                  ,bldtacttime                                      & 
-                 ,rublten,rvblten,rthblten                         &
+                 ,rublten,rvblten,rthblten,EDDYZM,EDDYZH           &  !add by yueqin EDDYZM,EDDYZH
                  ,tsk,xland,znt                                    &
 #if (HWRF==1)
                  ,msang,scurx,scury,iwavecpl,lcurr_sf              &
@@ -543,7 +543,8 @@ CONTAINS
 
 !
    REAL,       DIMENSION( ims:ime, kms:kme, jms:jme ),            &
-               INTENT(INOUT)    ::                       RUBLTEN, &
+               INTENT(INOUT)    ::                 EDDYZM,EDDYZH, & !add by yueqin eddyzm, eddyzh
+                                                         RUBLTEN, &
                                                          RVBLTEN, &
                                                         RTHBLTEN, &
                                            EXCH_H,EXCH_M,TKE_PBL, &
@@ -1008,6 +1009,8 @@ CONTAINS
             RTHBLTEN(I,K,J)=0.
             RUBLTEN(I,K,J)=0.
             RVBLTEN(I,K,J)=0.
+            EDDYZM(i,k,j)=0.   !add by yueqin
+            EDDYZH(i,k,j)=0.   !add by yueqin
             IF ( PRESENT( RQCBLTEN )) RQCBLTEN(I,K,J)=0.
             IF ( PRESENT( RQVBLTEN )) RQVBLTEN(I,K,J)=0.
          ENDDO
@@ -1637,8 +1640,8 @@ CONTAINS
               ,PBLH=pblh, KPBL2D=kpbl, EXCH_H=exch_h, REGIME=regime              &
               ,GZ1OZ0=gz1oz0,WSPD=wspd,PSIM=psim, MUT=mut, RMOL=rmol             &
               ,RUBLTEN=rublten,RVBLTEN=rvblten,RTHBLTEN=rthblten                 &
-              ,RQVBLTEN=rqvblten,RQCBLTEN=rqcblten,RQIBLTEN=rqiblten             &
-              ,IDS=ids,IDE=ide,JDS=jds,JDE=jde,KDS=kds,KDE=kde                   &
+              ,RQVBLTEN=rqvblten,RQCBLTEN=rqcblten,RQIBLTEN=rqiblten,EDDYZM=eddyzm,EDDYZH=eddyzh       &   !add by yueqin eddyzm,eddyzh
+             ,IDS=ids,IDE=ide,JDS=jds,JDE=jde,KDS=kds,KDE=kde                   &
               ,IMS=ims,IME=ime,JMS=jms,JME=jme,KMS=kms,KME=kme                   &
               ,ITS=its,ITE=ite,JTS=jts,JTE=jte,KTS=kts,KTE=kte                   &   
                                                                       )

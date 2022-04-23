@@ -24,7 +24,8 @@ CONTAINS
                      PBLH,     KPBL2D,   EXCH_H, REGIME,              &
                      GZ1OZ0,   WSPD,     PSIM, MUT, RMOL,             &
                      RUBLTEN,  RVBLTEN,  RTHBLTEN,                    &
-                     RQVBLTEN, RQCBLTEN, RQIBLTEN,                    &
+                     RQVBLTEN, RQCBLTEN, RQIBLTEN, EDDYZM,            &  !add by yueqin EDDYZM
+                     EDDYZH,                                          &  !add by yueqin EDDYZH
                      ids,ide, jds,jde, kds,kde,                       &
                      ims,ime, jms,jme, kms,kme,                       &
                      its,ite, jts,jte, kts,kte)
@@ -142,7 +143,8 @@ CONTAINS
     REAL,    DIMENSION( ims:ime, kms:kme, jms:jme ),                         &
              INTENT(INOUT)   ::                         RUBLTEN, RVBLTEN,    &
                                                         RTHBLTEN, RQVBLTEN,  &
-                                                        RQCBLTEN, RQIBLTEN
+                                                        RQCBLTEN, RQIBLTEN,  &
+                                                        EDDYZM,EDDYZH ! add by yueqin
 
    real,     dimension( ims:ime, kms:kme, jms:jme ),                         &
              intent(inout)   ::                         exch_h
@@ -219,6 +221,7 @@ CONTAINS
               ,utnp=rublten(ims,kms,j),vtnp=rvblten(ims,kms,j)     &
               ,ttnp=rthblten(ims,kms,j),qvtnp=rqvblten(ims,kms,j)  &
               ,qctnp=rqcblten(ims,kms,j),qitnp=rqiblten(ims,kms,j) &
+              ,eddyz_m=eddyzm(ims,kms,j),eddyz_h=eddyzh(ims,kms,j)  & !add by yueqin
               ,cpd=cpd,g=g,rovcp=rovcp,rd=rd,rdt=rdt               &
               ,psfcpa=psfc(ims,j),ust=ust(ims,j)                   &
               ,pbl=pblh(ims,j)                                     &
@@ -263,7 +266,7 @@ CONTAINS
               ,num_vert_mix                                 &
 #endif
               ,dzf,densx,utnp,vtnp,ttnp,qvtnp,qctnp,qitnp   &
-              ,cpd,g,rovcp,rd,rdt,psfcpa,ust                &
+              ,eddyz_m, eddyz_h,cpd,g,rovcp,rd,rdt,psfcpa,ust & !add by yueqin eddyz_m, eddyz_h
               ,pbl,exch_hx,regime,psim                      &
               ,hfx,qfx,tg,gz1oz0,wspd ,klpbl                &
               ,mut, rmol                                    &
@@ -290,7 +293,9 @@ CONTAINS
                                                                 ttnp,  &
                                                                 qvtnp, &
                                                                 qctnp, &
-                                                                qitnp
+                                                                qitnp, &
+                                                                eddyz_m, &
+                                                                eddyz_h  !add by yueqin
       real,     dimension( ims:ime ), intent(in   )   ::   psfcpa
       real,     dimension( ims:ime ), intent(in   )   ::   tg
       real,     dimension( ims:ime ), intent(inout)   ::   regime, rmol
@@ -523,6 +528,14 @@ CONTAINS
                 US,    VS,  TT,  THETAV, DENSX, PSTAR,              &
                 QVS,   QCS, QIS, G, RD, CPAIR,                      &
                 EDDYZ, EDDYZM, its,ite, kts,kte,ims,ime, kms,kme)
+
+     
+     DO K = kts, kte
+       DO I = its, ite
+         eddyz_m(I,K)  = EDDYZM(I,K)  
+         eddyz_h(I,K)  = EDDYZ(I,K)     !add by yueqin
+       ENDDO
+     ENDDO
 
      CALL ACM(DTPBL, PSTAR,  NOCONV, ZF, DZH, DZHI, J,              &
                  KLPBL, PBL,   DZFI, MOL,  UST,                     &
@@ -797,9 +810,9 @@ CONTAINS
 !	          ELSE
 !	            FH = (MAX(1.-RI/RC,0.01))**2
 !	          ENDIF
-            !FH=1./(1.+10.*RI+50.*RI**2+5000.*RI**4)+0.0012  !pleim5
-            !FH=1./(1.+10.*RI+80.*RI**2+10000.*RI**4)       !modifed by Yue 4/20/22
-            FH=1./(1.+10.*RI+80.*RI**2+50000.*RI**4)        !modified by Yue 4-21-22
+            FH=1./(1.+10.*RI+50.*RI**2+5000.*RI**4)+0.0012  !pleim5
+            !FH=1./(1.+10.*RI+80.*RI**2+10000.*RI**4)       !modifed by yueqin 4/20/22
+            !FH=1./(1.+10.*RI+80.*RI**2+50000.*RI**4)        !modified by yueqin 4-21-22
             FM= PR*FH + 0.00104
 
             EDDYZ(I,K) = KZO + SQRT(SS) * FH * SQL
