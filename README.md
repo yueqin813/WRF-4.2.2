@@ -10,3 +10,10 @@ The WRF Model is open-source code in the public domain, and its use is unrestric
 
 
 # WRF-4.2.2
+
+I modified the albedo in Pleim-Xiu LSM.
+To output EDDYZM & EDDYZH
+I modified the following scripts:
+"/dyn_em/module_first_rk_step_part1.F",
+"/phys/module_pbl_driver.F",
+"/phys/module_bl_acm.F"
